@@ -1,676 +1,138 @@
+
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data:; img-src 'self' https: data:;">
-    <meta name="referrer" content="strict-origin-when-cross-origin">
-    <title>پلتفرم اخبار اقتصادی و کریپتو</title>
-    
-    <!-- External Libraries -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Vazir:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
+    <title>AiEconomix | اخبار اقتصادی لحظه‌ای</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap');
         body {
-            font-family: 'Vazir', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Vazirmatn', sans-serif;
+            background: linear-gradient(to bottom, #0f0f0f, #1a1a1a);
+            color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            direction: rtl;
         }
-        
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+        header, footer {
+            background: #141414;
+            color: #ffd700;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
         }
-        
-        .crypto-card {
-            transition: all 0.3s ease;
+        nav {
+            background: #222;
+            padding: 1rem;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
-        
-        .crypto-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        nav a {
+            color: #ffcc00;
+            margin: 0 1rem;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s ease;
         }
-        
-        .news-item {
-            animation: slideIn 0.5s ease forwards;
+        nav a:hover {
+            color: #ffffff;
+            text-decoration: underline;
         }
-        
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(20px); }
-            to { opacity: 1; transform: translateX(0); }
+        .section {
+            padding: 2rem;
+            margin: auto;
+            max-width: 1000px;
+            border-bottom: 1px solid #333;
         }
-        
-        .pulse {
-            animation: pulse 2s infinite;
+        iframe, .widget {
+            width: 100%;
+            border: none;
+            margin-top: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.05);
         }
-        
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
+        h2 {
+            color: #ffcc00;
+            border-bottom: 2px solid #ffcc00;
+            padding-bottom: 0.5rem;
         }
-        
-        .live-indicator {
-            width: 8px;
-            height: 8px;
-            background-color: #ef4444;
-            border-radius: 50%;
-            display: inline-block;
-            animation: blink 1s infinite;
+        .search-bar {
+            margin: 1rem auto;
+            max-width: 500px;
+            text-align: center;
         }
-        
-        @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
+        .search-bar input {
+            padding: 0.7rem;
+            width: 70%;
+            border: 1px solid #ccc;
+            border-radius: 6px;
         }
-        
-        .chart-container {
-            height: 400px;
-        }
-        
-        .scrollbar-hide {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-        
-        .scrollbar-hide::-webkit-scrollbar {
-            display: none;
-        }
-        
-        .positive { color: #10b981; }
-        .negative { color: #ef4444; }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        .tab-button.active {
-            background: rgba(59, 130, 246, 0.2);
-            border-bottom: 2px solid #3b82f6;
+        .search-bar button {
+            padding: 0.7rem 1rem;
+            border: none;
+            background: #ffd700;
+            color: #000;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-right: 0.5rem;
         }
     </style>
 </head>
-<body class="min-h-screen">
-    <!-- Header -->
-    <header class="glass-effect sticky top-0 z-50 p-4">
-        <div class="container mx-auto flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <i class="fas fa-chart-line text-2xl text-white"></i>
-                <h1 class="text-xl font-bold text-white">پلتفرم اخبار اقتصادی و کریپتو</h1>
-                <div class="live-indicator"></div>
-                <span class="text-sm text-green-300">زنده</span>
-            </div>
-            <div class="flex items-center gap-4 text-white">
-                <span id="current-time" class="text-sm"></span>
-                <span id="last-update" class="text-xs opacity-75"></span>
-            </div>
-        </div>
+<body>
+    <header>
+        <h1>💹 AiEconomix</h1>
+        <p>پوشش لحظه‌ای بازارهای مالی ایران و جهان با طراحی مدرن و لوکس</p>
     </header>
+    <nav>
+        <a href="#crypto">رمزارز</a>
+        <a href="#gold">طلا و ارز</a>
+        <a href="#stock">بورس آمریکا</a>
+        <a href="#news">اخبار اقتصادی</a>
+        <a href="#tweets">پست‌های X</a>
+        <a href="#ai">تحلیل هوش مصنوعی</a>
+    </nav>
 
-    <!-- Main Content -->
-    <main class="container mx-auto p-4 space-y-6">
-        <!-- Tabs Navigation -->
-        <div class="glass-effect rounded-lg p-4">
-            <div class="flex flex-wrap gap-2 mb-4">
-                <button class="tab-button active px-4 py-2 rounded text-white transition-all" onclick="showTab('crypto')">
-                    <i class="fab fa-bitcoin mr-2"></i>کریپتوکارنسی
-                </button>
-                <button class="tab-button px-4 py-2 rounded text-white transition-all" onclick="showTab('economic')">
-                    <i class="fas fa-chart-bar mr-2"></i>شاخص‌های اقتصادی
-                </button>
-                <button class="tab-button px-4 py-2 rounded text-white transition-all" onclick="showTab('calendar')">
-                    <i class="fas fa-calendar mr-2"></i>تقویم اقتصادی
-                </button>
-                <button class="tab-button px-4 py-2 rounded text-white transition-all" onclick="showTab('iran')">
-                    <i class="fas fa-flag mr-2"></i>بازار ایران
-                </button>
-                <button class="tab-button px-4 py-2 rounded text-white transition-all" onclick="showTab('news')">
-                    <i class="fas fa-newspaper mr-2"></i>اخبار
-                </button>
-            </div>
+    <div class="search-bar">
+        <input type="text" placeholder="جستجو در اخبار و قیمت‌ها...">
+        <button>🔍 جستجو</button>
+    </div>
 
-            <!-- Cryptocurrency Tab -->
-            <div id="crypto" class="tab-content active">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                    <div class="crypto-card glass-effect rounded-lg p-4 text-center">
-                        <i class="fab fa-bitcoin text-3xl text-yellow-400 mb-2"></i>
-                        <h3 class="text-white font-bold">Bitcoin</h3>
-                        <p id="btc-price" class="text-2xl text-green-400">$43,250</p>
-                        <p id="btc-change" class="text-sm positive">+2.5%</p>
-                    </div>
-                    <div class="crypto-card glass-effect rounded-lg p-4 text-center">
-                        <i class="fab fa-ethereum text-3xl text-blue-400 mb-2"></i>
-                        <h3 class="text-white font-bold">Ethereum</h3>
-                        <p id="eth-price" class="text-2xl text-green-400">$2,650</p>
-                        <p id="eth-change" class="text-sm positive">+1.8%</p>
-                    </div>
-                    <div class="crypto-card glass-effect rounded-lg p-4 text-center">
-                        <i class="fas fa-coins text-3xl text-purple-400 mb-2"></i>
-                        <h3 class="text-white font-bold">BNB</h3>
-                        <p id="bnb-price" class="text-2xl text-red-400">$315</p>
-                        <p id="bnb-change" class="text-sm negative">-0.8%</p>
-                    </div>
-                    <div class="crypto-card glass-effect rounded-lg p-4 text-center">
-                        <i class="fas fa-coins text-3xl text-green-400 mb-2"></i>
-                        <h3 class="text-white font-bold">Solana</h3>
-                        <p id="sol-price" class="text-2xl text-green-400">$98</p>
-                        <p id="sol-change" class="text-sm positive">+3.2%</p>
-                    </div>
-                </div>
-                
-                <div class="glass-effect rounded-lg p-4">
-                    <h3 class="text-white font-bold mb-4">
-                        <i class="fas fa-chart-area mr-2"></i>نمودار قیمت Bitcoin
-                    </h3>
-                    <div class="chart-container">
-                        <canvas id="cryptoChart"></canvas>
-                    </div>
-                </div>
-            </div>
+    <div class="section" id="crypto">
+        <h2>قیمت لحظه‌ای رمزارزها</h2>
+        <iframe src="https://www.coingecko.com/en/widgets/live-crypto-prices" height="300"></iframe>
+    </div>
 
-            <!-- Economic Indicators Tab -->
-            <div id="economic" class="tab-content">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                    <div class="glass-effect rounded-lg p-4">
-                        <h3 class="text-white font-bold mb-3">
-                            <i class="fas fa-flag-usa mr-2"></i>شاخص‌های آمریکا
-                        </h3>
-                        <div class="space-y-2 text-white">
-                            <div class="flex justify-between">
-                                <span>S&P 500</span>
-                                <span class="positive">4,785 (+0.8%)</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>NASDAQ</span>
-                                <span class="positive">15,120 (+1.2%)</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>DOW</span>
-                                <span class="negative">36,450 (-0.3%)</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="glass-effect rounded-lg p-4">
-                        <h3 class="text-white font-bold mb-3">
-                            <i class="fas fa-euro-sign mr-2"></i>شاخص‌های اروپا
-                        </h3>
-                        <div class="space-y-2 text-white">
-                            <div class="flex justify-between">
-                                <span>DAX</span>
-                                <span class="positive">16,890 (+0.5%)</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>FTSE 100</span>
-                                <span class="negative">7,650 (-0.2%)</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>CAC 40</span>
-                                <span class="positive">7,320 (+0.7%)</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="glass-effect rounded-lg p-4">
-                        <h3 class="text-white font-bold mb-3">
-                            <i class="fas fa-globe mr-2"></i>شاخص‌های جهانی
-                        </h3>
-                        <div class="space-y-2 text-white">
-                            <div class="flex justify-between">
-                                <span>Nikkei</span>
-                                <span class="positive">33,850 (+1.1%)</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>Hang Seng</span>
-                                <span class="negative">16,200 (-0.8%)</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>Shanghai</span>
-                                <span class="positive">3,150 (+0.4%)</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="glass-effect rounded-lg p-4">
-                    <h3 class="text-white font-bold mb-4">
-                        <i class="fas fa-chart-line mr-2"></i>روند شاخص‌های جهانی
-                    </h3>
-                    <div class="chart-container">
-                        <canvas id="indexChart"></canvas>
-                    </div>
-                </div>
-            </div>
+    <div class="section" id="gold">
+        <h2>قیمت طلا و ارز - ایران</h2>
+        <iframe src="https://www.tgju.org/" height="450"></iframe>
+    </div>
 
-            <!-- Economic Calendar Tab -->
-            <div id="calendar" class="tab-content">
-                <div class="glass-effect rounded-lg p-4 mb-6">
-                    <h3 class="text-white font-bold mb-4">
-                        <i class="fas fa-calendar-alt mr-2"></i>رویدادهای مهم اقتصادی امروز
-                    </h3>
-                    <div class="space-y-3">
-                        <div class="flex items-center justify-between p-3 bg-red-500 bg-opacity-20 rounded-lg">
-                            <div class="flex items-center gap-3">
-                                <span class="w-3 h-3 bg-red-500 rounded-full"></span>
-                                <span class="text-white">14:30</span>
-                                <span class="text-white font-semibold">اعلام نرخ تورم آمریکا (CPI)</span>
-                            </div>
-                            <span class="text-red-400">تاثیر بالا</span>
-                        </div>
-                        
-                        <div class="flex items-center justify-between p-3 bg-yellow-500 bg-opacity-20 rounded-lg">
-                            <div class="flex items-center gap-3">
-                                <span class="w-3 h-3 bg-yellow-500 rounded-full"></span>
-                                <span class="text-white">16:00</span>
-                                <span class="text-white font-semibold">نشست بانک مرکزی اروپا</span>
-                            </div>
-                            <span class="text-yellow-400">تاثیر متوسط</span>
-                        </div>
-                        
-                        <div class="flex items-center justify-between p-3 bg-green-500 bg-opacity-20 rounded-lg">
-                            <div class="flex items-center gap-3">
-                                <span class="w-3 h-3 bg-green-500 rounded-full"></span>
-                                <span class="text-white">18:30</span>
-                                <span class="text-white font-semibold">گزارش ذخایر نفت آمریکا</span>
-                            </div>
-                            <span class="text-green-400">تاثیر کم</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="glass-effect rounded-lg p-4">
-                    <h3 class="text-white font-bold mb-4">
-                        <i class="fas fa-clock mr-2"></i>رویدادهای هفته آینده
-                    </h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="space-y-2">
-                            <h4 class="text-white font-semibold">دوشنبه</h4>
-                            <div class="text-sm text-gray-300">
-                                <p>• گزارش تولید صنعتی آلمان</p>
-                                <p>• شاخص اعتماد مصرف‌کنندگان آمریکا</p>
-                            </div>
-                        </div>
-                        <div class="space-y-2">
-                            <h4 class="text-white font-semibold">سه‌شنبه</h4>
-                            <div class="text-sm text-gray-300">
-                                <p>• نرخ بیکاری انگلستان</p>
-                                <p>• فروش خرده‌فروشی آمریکا</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div class="section" id="stock">
+        <h2>شاخص‌های بورس آمریکا</h2>
+        <iframe src="https://www.tradingview.com/markets/indices/quotes-major/" height="500"></iframe>
+    </div>
 
-            <!-- Iran Market Tab -->
-            <div id="iran" class="tab-content">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                    <div class="glass-effect rounded-lg p-4 text-center">
-                        <i class="fas fa-coins text-3xl text-yellow-400 mb-2"></i>
-                        <h3 class="text-white font-bold">طلا</h3>
-                        <p class="text-2xl text-yellow-400">2,850,000 ریال</p>
-                        <p class="text-sm positive">+1.2%</p>
-                    </div>
-                    
-                    <div class="glass-effect rounded-lg p-4 text-center">
-                        <i class="fas fa-dollar-sign text-3xl text-green-400 mb-2"></i>
-                        <h3 class="text-white font-bold">دلار</h3>
-                        <p class="text-2xl text-green-400">58,500 ریال</p>
-                        <p class="text-sm negative">-0.8%</p>
-                    </div>
-                    
-                    <div class="glass-effect rounded-lg p-4 text-center">
-                        <i class="fas fa-chart-line text-3xl text-blue-400 mb-2"></i>
-                        <h3 class="text-white font-bold">شاخص بورس</h3>
-                        <p class="text-2xl text-blue-400">2,150,000</p>
-                        <p class="text-sm positive">+2.1%</p>
-                    </div>
-                    
-                    <div class="glass-effect rounded-lg p-4 text-center">
-                        <i class="fas fa-home text-3xl text-orange-400 mb-2"></i>
-                        <h3 class="text-white font-bold">مسکن (متری)</h3>
-                        <p class="text-2xl text-orange-400">85,000,000 ریال</p>
-                        <p class="text-sm positive">+0.5%</p>
-                    </div>
-                </div>
-                
-                <div class="glass-effect rounded-lg p-4">
-                    <h3 class="text-white font-bold mb-4">
-                        <i class="fas fa-building mr-2"></i>شرکت‌های برتر بورس
-                    </h3>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-white">
-                            <thead>
-                                <tr class="border-b border-gray-600">
-                                    <th class="text-right py-2">نماد</th>
-                                    <th class="text-right py-2">قیمت</th>
-                                    <th class="text-right py-2">تغییر</th>
-                                    <th class="text-right py-2">حجم</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="py-2">فولاد</td>
-                                    <td class="py-2">12,500</td>
-                                    <td class="py-2 positive">+3.2%</td>
-                                    <td class="py-2">2.5M</td>
-                                </tr>
-                                <tr>
-                                    <td class="py-2">پتروشیمی</td>
-                                    <td class="py-2">8,900</td>
-                                    <td class="py-2 negative">-1.5%</td>
-                                    <td class="py-2">1.8M</td>
-                                </tr>
-                                <tr>
-                                    <td class="py-2">بانک ملت</td>
-                                    <td class="py-2">15,600</td>
-                                    <td class="py-2 positive">+0.8%</td>
-                                    <td class="py-2">3.1M</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+    <div class="section" id="news">
+        <h2>اخبار اقتصادی ایران و جهان</h2>
+        <iframe src="https://www.investing.com/news/economy" height="500"></iframe>
+    </div>
 
-            <!-- News Tab -->
-            <div id="news" class="tab-content">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="glass-effect rounded-lg p-4">
-                        <h3 class="text-white font-bold mb-4">
-                            <i class="fas fa-globe-americas mr-2"></i>اخبار بین‌المللی
-                        </h3>
-                        <div id="international-news" class="space-y-3 scrollbar-hide max-h-96 overflow-y-auto">
-                            <!-- News items will be populated by JavaScript -->
-                        </div>
-                    </div>
-                    
-                    <div class="glass-effect rounded-lg p-4">
-                        <h3 class="text-white font-bold mb-4">
-                            <i class="fas fa-flag mr-2"></i>اخبار داخلی
-                        </h3>
-                        <div id="domestic-news" class="space-y-3 scrollbar-hide max-h-96 overflow-y-auto">
-                            <!-- News items will be populated by JavaScript -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
+    <div class="section" id="tweets">
+        <h2>پست‌های تاثیرگذار در بازار از شبکه X</h2>
+        <iframe src="https://nitter.net/search?f=tweets&q=economy+OR+fed+OR+gold&since=&until=" height="500"></iframe>
+    </div>
 
-    <!-- Footer -->
-    <footer class="glass-effect mt-8 p-4 text-center text-white text-sm">
-        <p>© 2024 پلتفرم اخبار اقتصادی و کریپتو - تمامی حقوق محفوظ است</p>
-        <p class="mt-2">داده‌ها از منابع رسمی و رایگان جمع‌آوری شده و به صورت خودکار به‌روزرسانی می‌شوند</p>
+    <div class="section" id="ai">
+        <h2>تحلیل‌های هوش مصنوعی بازار</h2>
+        <iframe src="https://chat.openai.com/" height="400"></iframe>
+    </div>
+
+    <footer>
+        <p>© 2025 AiEconomix - تمامی حقوق محفوظ است.</p>
     </footer>
-
-    <script>
-        // Security and initialization
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize all components
-            updateTime();
-            initializeCharts();
-            loadNews();
-            startRealTimeUpdates();
-            
-            // Set initial last update time
-            document.getElementById('last-update').textContent = 'آخرین به‌روزرسانی: ' + new Date().toLocaleTimeString('fa-IR');
-        });
-
-        // Tab functionality
-        function showTab(tabName) {
-            // Hide all tab contents
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            
-            // Remove active class from all buttons
-            document.querySelectorAll('.tab-button').forEach(button => {
-                button.classList.remove('active');
-            });
-            
-            // Show selected tab and activate button
-            document.getElementById(tabName).classList.add('active');
-            event.target.classList.add('active');
-        }
-
-        // Time update function
-        function updateTime() {
-            const now = new Date();
-            const timeOptions = { 
-                timeZone: 'Asia/Tehran',
-                hour: '2-digit', 
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: false
-            };
-            document.getElementById('current-time').textContent = now.toLocaleTimeString('fa-IR', timeOptions);
-        }
-
-        // Chart initialization
-        function initializeCharts() {
-            // Crypto Chart
-            const cryptoCtx = document.getElementById('cryptoChart').getContext('2d');
-            new Chart(cryptoCtx, {
-                type: 'line',
-                data: {
-                    labels: Array.from({length: 24}, (_, i) => `${i}:00`),
-                    datasets: [{
-                        label: 'Bitcoin Price',
-                        data: generateRandomData(24, 40000, 45000),
-                        borderColor: '#f59e0b',
-                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
-                        tension: 0.4,
-                        fill: true
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false }
-                    },
-                    scales: {
-                        y: { ticks: { color: 'white' }, grid: { color: 'rgba(255,255,255,0.1)' } },
-                        x: { ticks: { color: 'white' }, grid: { color: 'rgba(255,255,255,0.1)' } }
-                    }
-                }
-            });
-
-            // Index Chart
-            const indexCtx = document.getElementById('indexChart').getContext('2d');
-            new Chart(indexCtx, {
-                type: 'line',
-                data: {
-                    labels: ['ژانویه', 'فوریه', 'مارس', 'آوریل', 'مه', 'ژوئن'],
-                    datasets: [{
-                        label: 'S&P 500',
-                        data: [4200, 4350, 4180, 4450, 4600, 4785],
-                        borderColor: '#10b981',
-                        tension: 0.4
-                    }, {
-                        label: 'NASDAQ',
-                        data: [13500, 14200, 13800, 14800, 15200, 15120],
-                        borderColor: '#3b82f6',
-                        tension: 0.4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: { ticks: { color: 'white' }, grid: { color: 'rgba(255,255,255,0.1)' } },
-                        x: { ticks: { color: 'white' }, grid: { color: 'rgba(255,255,255,0.1)' } }
-                    },
-                    plugins: {
-                        legend: { labels: { color: 'white' } }
-                    }
-                }
-            });
-        }
-
-        // News loading simulation
-        function loadNews() {
-            const internationalNews = [
-                {
-                    title: 'فدرال رزرو آمریکا نرخ بهره را ثابت نگه داشت',
-                    summary: 'بانک مرکزی آمریکا تصمیم گرفت نرخ بهره را در محدوده 5.25-5.50 درصد حفظ کند.',
-                    time: '2 ساعت پیش',
-                    importance: 'high'
-                },
-                {
-                    title: 'قیمت نفت برنت به 85 دلار رسید',
-                    summary: 'افزایش تقاضا و کاهش ذخایر موجب رشد قیمت نفت شده است.',
-                    time: '3 ساعت پیش',
-                    importance: 'medium'
-                },
-                {
-                    title: 'بانک مرکزی اروپا سیاست پولی را بازنگری می‌کند',
-                    summary: 'ECB در حال بررسی تغییرات احتمالی در نرخ بهره است.',
-                    time: '5 ساعت پیش',
-                    importance: 'medium'
-                }
-            ];
-
-            const domesticNews = [
-                {
-                    title: 'شاخص بورس تهران رکورد جدیدی ثبت کرد',
-                    summary: 'شاخص کل بورس با رشد 2.1 درصدی به بالاترین سطح خود رسید.',
-                    time: '1 ساعت پیش',
-                    importance: 'high'
-                },
-                {
-                    title: 'قیمت طلا در بازار تهران افزایش یافت',
-                    summary: 'هر گرم طلای 18 عیار به 2,850,000 ریال رسید.',
-                    time: '4 ساعت پیش',
-                    importance: 'medium'
-                },
-                {
-                    title: 'نرخ ارز در بازار آزاد کاهش یافت',
-                    summary: 'قیمت دلار آمریکا به 58,500 ریال رسید.',
-                    time: '6 ساعت پیش',
-                    importance: 'low'
-                }
-            ];
-
-            displayNews('international-news', internationalNews);
-            displayNews('domestic-news', domesticNews);
-        }
-
-        function displayNews(containerId, newsArray) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = newsArray.map(news => `
-                <div class="news-item p-3 bg-black bg-opacity-20 rounded-lg border-r-4 ${getImportanceColor(news.importance)}">
-                    <div class="flex justify-between items-start mb-2">
-                        <h4 class="text-white font-semibold text-sm">${news.title}</h4>
-                        <span class="text-xs text-gray-300">${news.time}</span>
-                    </div>
-                    <p class="text-gray-300 text-xs">${news.summary}</p>
-                    <div class="mt-2">
-                        <span class="inline-block px-2 py-1 bg-blue-500 bg-opacity-30 text-blue-300 text-xs rounded">
-                            ${getImportanceText(news.importance)}
-                        </span>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function getImportanceColor(importance) {
-            switch(importance) {
-                case 'high': return 'border-red-500';
-                case 'medium': return 'border-yellow-500';
-                case 'low': return 'border-green-500';
-                default: return 'border-gray-500';
-            }
-        }
-
-        function getImportanceText(importance) {
-            switch(importance) {
-                case 'high': return 'اهمیت بالا';
-                case 'medium': return 'اهمیت متوسط';
-                case 'low': return 'اهمیت کم';
-                default: return 'عادی';
-            }
-        }
-
-        // Real-time updates simulation
-        function startRealTimeUpdates() {
-            setInterval(() => {
-                updateTime();
-                updateCryptoPrices();
-                updateLastUpdateTime();
-            }, 1000);
-
-            setInterval(() => {
-                simulateMarketChanges();
-                loadNews();
-            }, 30000); // Update every 30 seconds
-        }
-
-        function updateCryptoPrices() {
-            // Simulate small price fluctuations
-            const cryptos = ['btc', 'eth', 'bnb', 'sol'];
-            cryptos.forEach(crypto => {
-                const priceElement = document.getElementById(`${crypto}-price`);
-                const changeElement = document.getElementById(`${crypto}-change`);
-                
-                if (priceElement && Math.random() < 0.1) { // 10% chance to update
-                    const currentPrice = parseFloat(priceElement.textContent.replace(/[$,]/g, ''));
-                    const change = (Math.random() - 0.5) * 0.02; // ±1% change
-                    const newPrice = currentPrice * (1 + change);
-                    const changePercent = (change * 100).toFixed(1);
-                    
-                    priceElement.textContent = '$' + Math.round(newPrice).toLocaleString();
-                    changeElement.textContent = `${changePercent >= 0 ? '+' : ''}${changePercent}%`;
-                    changeElement.className = `text-sm ${changePercent >= 0 ? 'positive' : 'negative'}`;
-                }
-            });
-        }
-
-        function simulateMarketChanges() {
-            // Simulate minor market movements
-            console.log('Market data updated...');
-        }
-
-        function updateLastUpdateTime() {
-            document.getElementById('last-update').textContent = 'آخرین به‌روزرسانی: ' + new Date().toLocaleTimeString('fa-IR');
-        }
-
-        function generateRandomData(length, min, max) {
-            return Array.from({length}, () => Math.floor(Math.random() * (max - min + 1)) + min);
-        }
-
-        // Security measures
-        window.addEventListener('beforeunload', function() {
-            // Clear sensitive data before page unload
-            sessionStorage.clear();
-        });
-
-        // Prevent right-click context menu for security
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-        });
-
-        // Console warning
-        console.warn('🔒 این سایت محافظت شده است. لطفاً از تلاش برای دستکاری کد خودداری کنید.');
-    </script>
 </body>
 </html>
-    <script id="html_badge_script1">
-        window.__genspark_remove_badge_link = "https://www.genspark.ai/api/html_badge/" +
-            "remove_badge?token=To%2FBnjzloZ3UfQdcSaYfDlJ2YIPXL56ivyjO0uxRregv6igBbUQWnYd2cGI9XgBKDakjY2H4uAPTX%2Fhy%2FKrviXqoy8u1OKI2pDBIrCMFcSZ8M9ZaKJa9GBa5z%2B24n2roQBkC37vuTpsX3u1p37yXqaobPXBJjT95hm%2BNQkdyMT%2FBCEpgpA6n5czx%2FWtf1vQR0m0AL6bQKgfTcNIMh0T4WF71pMUGBbYGMfhghineDOB5cBFVkMgq1OnGidq0CLUiBx6KXm4BP5N2758i93XS7r9CTDPIe7WLzSASY7if%2BIfWN1GXBVbXaIz9ecES1t78byEXdVNaURJNz%2FlR1cb8cWTOE9eMA7kpbrhp34F97Idq6GQgQwINkCNX2aklZYQ2IhcEzZbkU4eIPsCy7QVGPNB3csrCeKIl%2FP61B00j0yAauO2OK0hkgP1Xj%2BPKWAcVitYvrYIY4YFuKZRDn9xxgHdoFQAbC6ByPH1RFxokMZv8XeEvxGV2GY7c7g8uf%2Bdg4UntJ%2Fyh3Vo942lMwqZqLVFbF6C0bYFcelVg%2FpSgXRU%3D";
-        window.__genspark_locale = "en-US";
-        window.__genspark_token = "To/BnjzloZ3UfQdcSaYfDlJ2YIPXL56ivyjO0uxRregv6igBbUQWnYd2cGI9XgBKDakjY2H4uAPTX/hy/KrviXqoy8u1OKI2pDBIrCMFcSZ8M9ZaKJa9GBa5z+24n2roQBkC37vuTpsX3u1p37yXqaobPXBJjT95hm+NQkdyMT/BCEpgpA6n5czx/Wtf1vQR0m0AL6bQKgfTcNIMh0T4WF71pMUGBbYGMfhghineDOB5cBFVkMgq1OnGidq0CLUiBx6KXm4BP5N2758i93XS7r9CTDPIe7WLzSASY7if+IfWN1GXBVbXaIz9ecES1t78byEXdVNaURJNz/lR1cb8cWTOE9eMA7kpbrhp34F97Idq6GQgQwINkCNX2aklZYQ2IhcEzZbkU4eIPsCy7QVGPNB3csrCeKIl/P61B00j0yAauO2OK0hkgP1Xj+PKWAcVitYvrYIY4YFuKZRDn9xxgHdoFQAbC6ByPH1RFxokMZv8XeEvxGV2GY7c7g8uf+dg4UntJ/yh3Vo942lMwqZqLVFbF6C0bYFcelVg/pSgXRU=";
-    </script>
-    
-        <script id="html_badge_script2" src="https://www.genspark.ai/html_badge.js"></script>
-        
-    <script id="html_notice_dialog_script" src="https://www.genspark.ai/notice_dialog.js"></script>
-    
