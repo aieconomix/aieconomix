@@ -3,48 +3,28 @@
 <html lang="fa">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AiEconomix | پایگاه تحلیل و اخبار اقتصادی</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AIEconomix - قیمت لحظه‌ای بازار</title>
+  <link href="style.css" rel="stylesheet">
 </head>
 <body>
   <header>
-    <h1>AiEconomix</h1>
+    <h1>AIEconomix</h1>
     <nav>
-      <input type="text" placeholder="جستجو..." id="searchBar">
-      <ul>
-        <li><a href="#">قیمت لحظه‌ای</a></li>
-        <li><a href="#">اخبار ایران</a></li>
-        <li><a href="#">بازار جهانی</a></li>
-        <li><a href="#">کریپتو</a></li>
-        <li><a href="#">تاثیرگذاران</a></li>
-      </ul>
+      <input type="text" placeholder="جستجو...">
     </nav>
   </header>
-
   <main>
-    <section id="prices">
-      <h2>قیمت‌ها</h2>
-      <div id="crypto-prices">در حال دریافت قیمت رمزارزها...</div>
-      <div id="forex-prices">در حال دریافت نرخ ارز...</div>
-      <div id="gold-prices">در حال دریافت قیمت طلا...</div>
-    </section>
-
-    <section id="news">
-      <h2>آخرین اخبار اقتصادی</h2>
-      <div id="economic-news">در حال بارگذاری اخبار...</div>
-    </section>
-
-    <section id="tweets">
-      <h2>تاثیرگذاران بازار</h2>
-      <blockquote class="twitter-tweet"><p lang="en" dir="ltr">Loading tweet...</p></blockquote>
-    </section>
+    <div id="prices" class="grid-container">
+      <div class="card" id="btc">BTC: <span>در حال بارگذاری</span></div>
+      <div class="card" id="eth">ETH: <span>در حال بارگذاری</span></div>
+      <div class="card" id="gold">Gold: <span>در حال بارگذاری</span></div>
+      <div class="card" id="usd">USD/IRR: <span>در حال بارگذاری</span></div>
+    </div>
   </main>
-
   <footer>
-    <p>&copy; 2025 AiEconomix | تمام حقوق محفوظ است.</p>
+    <p>© 2025 AIEconomix</p>
   </footer>
-
-  <script src="scripts.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
