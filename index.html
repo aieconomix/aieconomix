@@ -1,138 +1,50 @@
 
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="fa">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AiEconomix | اخبار اقتصادی لحظه‌ای</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap');
-        body {
-            font-family: 'Vazirmatn', sans-serif;
-            background: linear-gradient(to bottom, #0f0f0f, #1a1a1a);
-            color: #f0f0f0;
-            margin: 0;
-            padding: 0;
-            direction: rtl;
-        }
-        header, footer {
-            background: #141414;
-            color: #ffd700;
-            padding: 1rem;
-            text-align: center;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
-        }
-        nav {
-            background: #222;
-            padding: 1rem;
-            text-align: center;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-        nav a {
-            color: #ffcc00;
-            margin: 0 1rem;
-            text-decoration: none;
-            font-weight: bold;
-            transition: 0.3s ease;
-        }
-        nav a:hover {
-            color: #ffffff;
-            text-decoration: underline;
-        }
-        .section {
-            padding: 2rem;
-            margin: auto;
-            max-width: 1000px;
-            border-bottom: 1px solid #333;
-        }
-        iframe, .widget {
-            width: 100%;
-            border: none;
-            margin-top: 1rem;
-            border-radius: 12px;
-            box-shadow: 0 0 12px rgba(255, 255, 255, 0.05);
-        }
-        h2 {
-            color: #ffcc00;
-            border-bottom: 2px solid #ffcc00;
-            padding-bottom: 0.5rem;
-        }
-        .search-bar {
-            margin: 1rem auto;
-            max-width: 500px;
-            text-align: center;
-        }
-        .search-bar input {
-            padding: 0.7rem;
-            width: 70%;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-        }
-        .search-bar button {
-            padding: 0.7rem 1rem;
-            border: none;
-            background: #ffd700;
-            color: #000;
-            font-weight: bold;
-            border-radius: 6px;
-            cursor: pointer;
-            margin-right: 0.5rem;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AiEconomix | پایگاه تحلیل و اخبار اقتصادی</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <h1>💹 AiEconomix</h1>
-        <p>پوشش لحظه‌ای بازارهای مالی ایران و جهان با طراحی مدرن و لوکس</p>
-    </header>
+  <header>
+    <h1>AiEconomix</h1>
     <nav>
-        <a href="#crypto">رمزارز</a>
-        <a href="#gold">طلا و ارز</a>
-        <a href="#stock">بورس آمریکا</a>
-        <a href="#news">اخبار اقتصادی</a>
-        <a href="#tweets">پست‌های X</a>
-        <a href="#ai">تحلیل هوش مصنوعی</a>
+      <input type="text" placeholder="جستجو..." id="searchBar">
+      <ul>
+        <li><a href="#">قیمت لحظه‌ای</a></li>
+        <li><a href="#">اخبار ایران</a></li>
+        <li><a href="#">بازار جهانی</a></li>
+        <li><a href="#">کریپتو</a></li>
+        <li><a href="#">تاثیرگذاران</a></li>
+      </ul>
     </nav>
+  </header>
 
-    <div class="search-bar">
-        <input type="text" placeholder="جستجو در اخبار و قیمت‌ها...">
-        <button>🔍 جستجو</button>
-    </div>
+  <main>
+    <section id="prices">
+      <h2>قیمت‌ها</h2>
+      <div id="crypto-prices">در حال دریافت قیمت رمزارزها...</div>
+      <div id="forex-prices">در حال دریافت نرخ ارز...</div>
+      <div id="gold-prices">در حال دریافت قیمت طلا...</div>
+    </section>
 
-    <div class="section" id="crypto">
-        <h2>قیمت لحظه‌ای رمزارزها</h2>
-        <iframe src="https://www.coingecko.com/en/widgets/live-crypto-prices" height="300"></iframe>
-    </div>
+    <section id="news">
+      <h2>آخرین اخبار اقتصادی</h2>
+      <div id="economic-news">در حال بارگذاری اخبار...</div>
+    </section>
 
-    <div class="section" id="gold">
-        <h2>قیمت طلا و ارز - ایران</h2>
-        <iframe src="https://www.tgju.org/" height="450"></iframe>
-    </div>
+    <section id="tweets">
+      <h2>تاثیرگذاران بازار</h2>
+      <blockquote class="twitter-tweet"><p lang="en" dir="ltr">Loading tweet...</p></blockquote>
+    </section>
+  </main>
 
-    <div class="section" id="stock">
-        <h2>شاخص‌های بورس آمریکا</h2>
-        <iframe src="https://www.tradingview.com/markets/indices/quotes-major/" height="500"></iframe>
-    </div>
+  <footer>
+    <p>&copy; 2025 AiEconomix | تمام حقوق محفوظ است.</p>
+  </footer>
 
-    <div class="section" id="news">
-        <h2>اخبار اقتصادی ایران و جهان</h2>
-        <iframe src="https://www.investing.com/news/economy" height="500"></iframe>
-    </div>
-
-    <div class="section" id="tweets">
-        <h2>پست‌های تاثیرگذار در بازار از شبکه X</h2>
-        <iframe src="https://nitter.net/search?f=tweets&q=economy+OR+fed+OR+gold&since=&until=" height="500"></iframe>
-    </div>
-
-    <div class="section" id="ai">
-        <h2>تحلیل‌های هوش مصنوعی بازار</h2>
-        <iframe src="https://chat.openai.com/" height="400"></iframe>
-    </div>
-
-    <footer>
-        <p>© 2025 AiEconomix - تمامی حقوق محفوظ است.</p>
-    </footer>
+  <script src="scripts.js"></script>
 </body>
 </html>
