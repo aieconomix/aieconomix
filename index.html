@@ -1,30 +1,40 @@
-
 <!DOCTYPE html>
 <html lang="fa">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AIEconomix - قیمت لحظه‌ای بازار</title>
-  <link href="style.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AiEconomix - بازار لحظه‌ای</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>AIEconomix</h1>
-    <nav>
-      <input type="text" placeholder="جستجو...">
-    </nav>
-  </header>
-  <main>
-    <div id="prices" class="grid-container">
-      <div class="card" id="btc">BTC: <span>در حال بارگذاری</span></div>
-      <div class="card" id="eth">ETH: <span>در حال بارگذاری</span></div>
-      <div class="card" id="gold">Gold: <span>در حال بارگذاری</span></div>
-      <div class="card" id="usd">USD/IRR: <span>در حال بارگذاری</span></div>
-    </div>
-  </main>
-  <footer>
-    <p>© 2025 AIEconomix</p>
-  </footer>
-  <script src="script.js"></script>
+    <header>
+        <div class="logo">AiEconomix</div>
+        <nav>
+            <ul>
+                <li>خانه</li>
+                <li>بازار ارز</li>
+                <li>رمزارز</li>
+                <li>اخبار</li>
+                <li>شبکه X</li>
+            </ul>
+        </nav>
+        <input type="text" placeholder="جستجو...">
+    </header>
+    <main>
+        <section id="markets">
+            <h2>قیمت لحظه‌ای بازار</h2>
+            <div id="prices"></div>
+        </section>
+        <section id="news">
+            <h2>اخبار اقتصادی</h2>
+            <div id="news-list"></div>
+        </section>
+        <section id="x-posts">
+            <h2>پست‌های افراد تأثیرگذار</h2>
+            <div id="x-list"></div>
+        </section>
+    </main>
+    <footer>© 2025 AiEconomix - تحلیل اقتصادی لحظه‌ای</footer>
+    <script src="script.js"></script>
 </body>
 </html>

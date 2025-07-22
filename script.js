@@ -1,23 +1,39 @@
 
-async function fetchPrices() {
-  try {
-    const coingecko = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd');
-    const data = await coingecko.json();
-    document.querySelector('#btc span').textContent = data.bitcoin.usd + ' USD';
-    document.querySelector('#eth span').textContent = data.ethereum.usd + ' USD';
+document.addEventListener("DOMContentLoaded", () => {
+    // قیمت رمزارز (مثال بیت‌کوین)
+    fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd")
+        .then(res => res.json())
+        .then(data => {
+            const prices = document.getElementById("prices");
+            prices.innerHTML = `
+                <p>بیت‌کوین: $${data.bitcoin.usd}</p>
+                <p>اتریوم: $${data.ethereum.usd}</p>
+            `;
+        });
 
-    const gold = await fetch('https://api.metals.live/v1/spot/gold');
-    const goldPrice = await gold.json();
-    document.querySelector('#gold span').textContent = goldPrice[0] + ' USD';
+    // اخبار جعلی تستی
+    const news = [
+        "قیمت طلا امروز افزایش یافت.",
+        "بازار بورس آمریکا با نوسانات همراه بود.",
+        "ارز دیجیتال جدید وارد بازار شد."
+    ];
+    const newsList = document.getElementById("news-list");
+    news.forEach(n => {
+        const p = document.createElement("p");
+        p.textContent = n;
+        newsList.appendChild(p);
+    });
 
-    const usdIrr = await fetch('https://api.exchangerate.host/latest?base=USD&symbols=IRR');
-    const usdData = await usdIrr.json();
-    document.querySelector('#usd span').textContent = Math.round(usdData.rates.IRR) + ' IRR';
-
-  } catch (e) {
-    console.error("خطا در دریافت قیمت‌ها", e);
-  }
-}
-
-fetchPrices();
-setInterval(fetchPrices, 30000);
+    // پست‌های تأثیرگذار شبکه X (نمونه)
+    const xPosts = [
+        "📉 اقتصاد جهانی در مسیر نزولی؟",
+        "💰 سرمایه‌گذاری هوشمند در دوران تورم",
+        "🪙 آیا بیت‌کوین همچنان امن‌ترین دارایی است؟"
+    ];
+    const xList = document.getElementById("x-list");
+    xPosts.forEach(post => {
+        const p = document.createElement("p");
+        p.textContent = post;
+        xList.appendChild(p);
+    });
+});
